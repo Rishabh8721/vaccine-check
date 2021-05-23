@@ -14,13 +14,14 @@ public class JsonConverter {
     private static final String TAG = "json_converter";
 
     public CowinData getCowinData(String json){
-        Gson gson = new GsonBuilder().setDateFormat("dd-mm-yyyy").create();
-        return gson.fromJson(json, CowinData.class);
+        Gson gson = new GsonBuilder().setDateFormat("dd-MM-yyyy").create();
+        CowinData cowinData =  gson.fromJson(json, CowinData.class);
+        return cowinData;
     }
 
     public CowinCenterData getCowinCenterData(String json){
         Log.i(TAG, "getCowinCenterData: " + json);
-        Gson gson = new GsonBuilder().setDateFormat("dd-mm-yyyy").create();
+        Gson gson = new GsonBuilder().setDateFormat("dd-MM-yyyy").create();
         return gson.fromJson(json, CowinCenterData.class);
     }
 

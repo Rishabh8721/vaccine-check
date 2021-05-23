@@ -44,7 +44,13 @@ public class MainActivity extends AppCompatActivity {
 
         centerDAO = new CenterDAOImpl();
         jsonFilter = new JsonFilter();
-        getStates();
+
+        try{
+            getStates();
+        }catch (Exception e){
+            Toast.makeText(this, "Can't fetch data, check network", Toast.LENGTH_SHORT).show();
+            return;
+        }
 
         setListeners();
     }
@@ -53,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
         states = centerDAO.fetchStates();
         if (states == null)
             Toast.makeText(this, "Can't fetch data, check network", Toast.LENGTH_SHORT).show();
-        else if(states.isEmpty())
+        else if (states.isEmpty())
             Toast.makeText(this, "Can't fetch data, check network", Toast.LENGTH_SHORT).show();
         else {
             binding.districtStateName.setAdapter(getStateSpinnerAdapter());
@@ -96,34 +102,34 @@ public class MainActivity extends AppCompatActivity {
         });
 
         binding.resultsRadioGroup.setOnCheckedChangeListener((group, checkedId) -> {
-           if (checkedId == R.id.resultDestrict){
-               binding.resultLayoutCenter.setVisibility(View.GONE);
-               binding.resultLayoutDistrict.setVisibility(View.VISIBLE);
-               binding.resultLayoutPincode.setVisibility(View.GONE);
-               resultMode = 0;
-           }else if (checkedId == R.id.resultPincode){
-               binding.resultLayoutCenter.setVisibility(View.GONE);
-               binding.resultLayoutDistrict.setVisibility(View.GONE);
-               binding.resultLayoutPincode.setVisibility(View.VISIBLE);
-               resultMode = 1;
-           }else if (checkedId == R.id.resultCenter){
-               binding.resultLayoutCenter.setVisibility(View.VISIBLE);
-               binding.resultLayoutDistrict.setVisibility(View.GONE);
-               binding.resultLayoutPincode.setVisibility(View.GONE);
-               resultMode = 2;
-           }
+            if (checkedId == R.id.resultDestrict) {
+                binding.resultLayoutCenter.setVisibility(View.GONE);
+                binding.resultLayoutDistrict.setVisibility(View.VISIBLE);
+                binding.resultLayoutPincode.setVisibility(View.GONE);
+                resultMode = 0;
+            } else if (checkedId == R.id.resultPincode) {
+                binding.resultLayoutCenter.setVisibility(View.GONE);
+                binding.resultLayoutDistrict.setVisibility(View.GONE);
+                binding.resultLayoutPincode.setVisibility(View.VISIBLE);
+                resultMode = 1;
+            } else if (checkedId == R.id.resultCenter) {
+                binding.resultLayoutCenter.setVisibility(View.VISIBLE);
+                binding.resultLayoutDistrict.setVisibility(View.GONE);
+                binding.resultLayoutPincode.setVisibility(View.GONE);
+                resultMode = 2;
+            }
         });
 
         binding.check.setOnClickListener(v -> {
             List<Center> centers = new ArrayList<>();
             if (resultMode == 0) {
                 centers = centerDAO.fetchByDistrict(districts.get(binding.districtDistrictName.getSelectedItemPosition()).getId());
-            }else if (resultMode == 1) {
+            } else if (resultMode == 1) {
                 if (validPincode(binding.pincode.getText().toString()))
                     centers = centerDAO.fetchByPincode(Long.parseLong(binding.pincode.getText().toString()));
                 else
                     return;
-            }else if (resultMode == 2) {
+            } else if (resultMode == 2) {
                 Toast.makeText(this, "Under development", Toast.LENGTH_SHORT).show();
                 return;
             }
@@ -163,24 +169,25 @@ public class MainActivity extends AppCompatActivity {
                 List<Session> sessionFiltered = jsonFilter.getFilteredSessions(feeFilteredCenter.getSessions(), binding.bookedSlots.isChecked(), vaccine, binding.dose2.isChecked(), age);
                 List<VaccineFees> vaccineFeesList = feeFilteredCenter.getVaccineFees();
 
-                if(vaccineFeesList == null){
-                    for (Session session : sessionFiltered) {
-                        if (binding.dose2.isChecked())
-                            slots.add(new Slot(feeFilteredCenter.getName(), feeFilteredCenter.getBlockName(), feeFilteredCenter.getPincode(), session.getDate(), session.getAvailableCapacityDose2(), session.getSlots(), session.getVaccine(), session.getMinAgeLimit(), "Free"));
-                        else
-                            slots.add(new Slot(feeFilteredCenter.getName(), feeFilteredCenter.getBlockName(), feeFilteredCenter.getPincode(), session.getDate(), session.getAvailableCapacityDose1(), session.getSlots(), session.getVaccine(), session.getMinAgeLimit(), "Free"));
-                    }
-                }else{
-                    HashMap<String, String> vaccineFeesMap = new HashMap<>();
-                    for (VaccineFees fees : vaccineFeesList)
-                        vaccineFeesMap.put(fees.getVaccine(), fees.getFee());
+                for (Session session : sessionFiltered) {
+                    int availableCapacityDose;
+                    if (binding.dose2.isChecked())
+                        availableCapacityDose = session.getAvailableCapacityDose2();
+                    else
+                        availableCapacityDose = session.getAvailableCapacityDose1();
 
-                    for (Session session : sessionFiltered) {
-                        if (binding.dose2.isChecked())
-                            slots.add(new Slot(feeFilteredCenter.getName(), feeFilteredCenter.getBlockName(), feeFilteredCenter.getPincode(), session.getDate(), session.getAvailableCapacityDose2(), session.getSlots(), session.getVaccine(), session.getMinAgeLimit(), "\u20B9 " + vaccineFeesMap.get(session.getVaccine())));
-                        else
-                            slots.add(new Slot(feeFilteredCenter.getName(), feeFilteredCenter.getBlockName(), feeFilteredCenter.getPincode(), session.getDate(), session.getAvailableCapacityDose1(), session.getSlots(), session.getVaccine(), session.getMinAgeLimit(), "\u20B9 " + vaccineFeesMap.get(session.getVaccine())));
+                    String fee;
+                    if (vaccineFeesList == null)
+                        fee = "Free";
+                    else {
+                        HashMap<String, String> vaccineFeesMap = new HashMap<>();
+                        for (VaccineFees fees : vaccineFeesList)
+                            vaccineFeesMap.put(fees.getVaccine(), fees.getFee());
+
+                        fee = "\u20B9 " + vaccineFeesMap.get(session.getVaccine());
                     }
+
+                    slots.add(new Slot(feeFilteredCenter.getName(), feeFilteredCenter.getBlockName(), feeFilteredCenter.getPincode(), session.getDate(), availableCapacityDose, session.getSlots(), session.getVaccine(), session.getMinAgeLimit(), fee));
                 }
             }
 
@@ -196,7 +203,7 @@ public class MainActivity extends AppCompatActivity {
             binding.pincode.setError("Required");
             Toast.makeText(this, "Please enter pincode", Toast.LENGTH_SHORT).show();
             return false;
-        }else if(pincode.length() != 6){
+        } else if (pincode.length() != 6) {
             binding.pincode.setError("Invalid");
             Toast.makeText(this, "Invalid pincode", Toast.LENGTH_SHORT).show();
             return false;
@@ -204,7 +211,7 @@ public class MainActivity extends AppCompatActivity {
 
         try {
             Long.parseLong(pincode);
-        }catch (Exception e){
+        } catch (Exception e) {
             binding.pincode.setError("Invalid");
             Toast.makeText(this, "Invalid pincode", Toast.LENGTH_SHORT).show();
             return false;

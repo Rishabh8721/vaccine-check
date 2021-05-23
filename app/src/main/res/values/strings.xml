@@ -1,3 +1,10 @@
 <resources>
-    <string name="app_name">Vaccine Check</string>
+    <string name="app_name">Vaccinator</string>
+
+    <string-array name="date_sort">
+        <item>Most Recent Date</item>
+        <item>Farthest Date</item>
+        <item>Dose High to Low</item>
+        <item>Dose Low to High</item>
+    </string-array>
 </resources>

@@ -7,19 +7,49 @@
     android:background="#D8D8D8"
     tools:context=".SlotResults">
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:background="@color/white"
+        android:id="@+id/sortBar"
+        android:elevation="7dp">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Sort Date " />
+
+            <Spinner
+                android:id="@+id/dateSort"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:entries="@array/date_sort" />
+        </LinearLayout>
+    </RelativeLayout>
+
     <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/resultList"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/resultList"/>
+        android:layout_below="@id/sortBar"/>
 
     <TextView
+        android:id="@+id/empty"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/empty"
-        android:visibility="gone"
         android:layout_centerInParent="true"
         android:text="Sorry no slots available !"
         android:textColor="@color/negative_red"
-        android:textStyle="bold"/>
-    
+        android:textStyle="bold"
+        android:visibility="gone" />
+
 </RelativeLayout>

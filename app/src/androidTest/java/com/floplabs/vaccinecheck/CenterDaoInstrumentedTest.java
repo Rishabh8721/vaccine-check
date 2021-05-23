@@ -6,9 +6,11 @@ import androidx.test.ext.junit.runners.AndroidJUnit4;
 
 import com.floplabs.vaccinecheck.dao.CenterDAOImpl;
 import com.floplabs.vaccinecheck.json.JsonFilter;
+import com.floplabs.vaccinecheck.json.JsonSort;
 import com.floplabs.vaccinecheck.model.Center;
 import com.floplabs.vaccinecheck.model.District;
 import com.floplabs.vaccinecheck.model.Session;
+import com.floplabs.vaccinecheck.model.Slot;
 import com.floplabs.vaccinecheck.model.State;
 
 import org.junit.Before;
@@ -29,11 +31,13 @@ public class CenterDaoInstrumentedTest {
     private static final String TAG = "center_dao_impl_test";
     private CenterDAOImpl centerDAO;
     private JsonFilter jsonFilter;
+    private JsonSort jsonSort;
 
     @Before
     public void initialiseDao() {
         centerDAO = new CenterDAOImpl();
         jsonFilter = new JsonFilter();
+        jsonSort = new JsonSort();
     }
 
     @Test
@@ -130,11 +134,28 @@ public class CenterDaoInstrumentedTest {
                 fail();
 
         vaccine.add("COVAXIN");
-        List<Session> dose2Sessions = jsonFilter.getFilteredSessions(center.getSessions(), false, vaccine, true,45); // dose2
+        List<Session> dose2Sessions = jsonFilter.getFilteredSessions(center.getSessions(), false, vaccine, true, 45); // dose2
         Log.d(TAG, "testGetFilteredSessions: dose2Sessions: " + dose2Sessions);
         assertNotNull(dose2Sessions);
         for (Session dose2Session : dose2Sessions)
             if (dose2Session.getAvailableCapacityDose2() == 0)
                 fail();
+    }
+
+    @Test
+    public void testGetDateSortedSlots() {
+        List<Center> centers = centerDAO.fetchByDistrict(650);
+        assertNotNull(centers);
+        assertEquals(centers.get(0).getDistrictName(), "Gautam Buddha Nagar");
+
+        Log.d(TAG, "testGetDateSortedSlots: " + centers);
+
+        List<Slot> slots = new ArrayList<>();
+        for (Center center : centers)
+            for (Session session : center.getSessions())
+                slots.add(new Slot(center.getName(), center.getBlockName(), center.getPincode(), session.getDate(), session.getAvailableCapacityDose2(), session.getSlots(), session.getVaccine(), session.getMinAgeLimit(), "Free"));
+
+        List<Slot> sortedSlots = jsonSort.getDateSortedSlots(slots, false);
+        sortedSlots.forEach(a-> Log.d(TAG, a.getDate().toString()));
     }
 }

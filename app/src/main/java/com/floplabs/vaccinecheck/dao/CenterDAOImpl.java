@@ -1,5 +1,7 @@
 package com.floplabs.vaccinecheck.dao;
 
+import android.util.Log;
+
 import com.floplabs.vaccinecheck.http.JsonTask;
 import com.floplabs.vaccinecheck.json.JsonConverter;
 import com.floplabs.vaccinecheck.model.Center;
@@ -48,6 +50,7 @@ public class CenterDAOImpl implements CenterDAO {
         String dataJson = "";
         try {
             dataJson = new JsonTask().execute("https://cdn-api.co-vin.in/api/v2/appointment/sessions/public/calendarByDistrict?district_id=" + districtId + "&date=" + dateFormat.format(new Date())).get();
+            Log.d(TAG, "fetchByDistrict: " + "https://cdn-api.co-vin.in/api/v2/appointment/sessions/public/calendarByDistrict?district_id=" + districtId + "&date=" + dateFormat.format(new Date()));
         } catch (ExecutionException e) {
             e.printStackTrace();
         } catch (InterruptedException e) {

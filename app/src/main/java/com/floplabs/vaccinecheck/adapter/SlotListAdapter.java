@@ -22,7 +22,7 @@ import java.util.List;
 public class SlotListAdapter extends RecyclerView.Adapter<SlotListAdapter.ViewHolder> {
     private List<Slot> slots;
     private Context context;
-    private DateFormat dateFormat = new SimpleDateFormat("dd-mm-yyyy (EEE)");
+    private DateFormat dateFormat = new SimpleDateFormat("dd MMM, yyyy (EEE)");
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         private final TextView vaccineAndAge;
