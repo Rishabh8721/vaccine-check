@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "679040733442",
+    "project_id": "vaccinator-2834c",
+    "storage_bucket": "vaccinator-2834c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:679040733442:android:1ed0497fe544323335321b",
+        "android_client_info": {
+          "package_name": "com.floplabs.vaccinecheck"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "679040733442-8cknoa11451vuue2v1r9gm6v26ie94in.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD-TN5nF1zn41w8wDkwUd_rWwsHoPO4ppY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "679040733442-8cknoa11451vuue2v1r9gm6v26ie94in.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

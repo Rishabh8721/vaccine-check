@@ -19,6 +19,7 @@ import com.floplabs.vaccinecheck.model.Session;
 import com.floplabs.vaccinecheck.model.Slot;
 import com.floplabs.vaccinecheck.model.State;
 import com.floplabs.vaccinecheck.model.VaccineFees;
+import com.google.firebase.analytics.FirebaseAnalytics;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -35,12 +36,17 @@ public class MainActivity extends AppCompatActivity {
     private List<State> states;
     private List<District> districts;
 
+    private FirebaseAnalytics mFirebaseAnalytics;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = binding.inflate(getLayoutInflater());
         View view = binding.getRoot();
         setContentView(view);
+
+        // Obtain the FirebaseAnalytics instance.
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
 
         centerDAO = new CenterDAOImpl();
         jsonFilter = new JsonFilter();
