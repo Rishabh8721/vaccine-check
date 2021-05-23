@@ -1,0 +1,230 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="15dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Show results by" />
+
+        <RadioGroup
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/resultsRadioGroup"
+            android:orientation="horizontal">
+
+            <RadioButton
+                android:id="@+id/resultDestrict"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="true"
+                android:text="District" />
+
+            <RadioButton
+                android:id="@+id/resultPincode"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Pincode" />
+
+            <RadioButton
+                android:id="@+id/resultCenter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Center" />
+
+        </RadioGroup>
+
+        <LinearLayout
+            android:id="@+id/resultLayoutDistrict"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="State" />
+
+            <Spinner
+                android:id="@+id/districtStateName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="District" />
+
+            <Spinner
+                android:id="@+id/districtDistrictName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/resultLayoutPincode"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="Pincode" />
+
+            <EditText
+                android:id="@+id/pincode"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="number"
+                android:maxLength="6" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/resultLayoutCenter"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="State" />
+
+            <Spinner
+                android:id="@+id/centerStateName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="District" />
+
+            <Spinner
+                android:id="@+id/centerDistrictName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/centerList"
+                android:layout_marginTop="10dp"/>
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="Vaccine (Default All)" />
+
+        <CheckBox
+            android:id="@+id/vaccineCovishield"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="COVISHIELD" />
+
+        <CheckBox
+            android:id="@+id/vaccine_covaxin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="COVAXIN" />
+
+        <CheckBox
+            android:id="@+id/vaccineSputnik"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="SPUTNIK V" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="Dose" />
+
+        <RadioGroup
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <RadioButton
+                android:id="@+id/dose1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="true"
+                android:text="Dose 1" />
+
+            <RadioButton
+                android:id="@+id/dose2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Dose 2" />
+
+        </RadioGroup>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="Fee Type" />
+
+        <RadioGroup
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="true"
+                android:id="@+id/feeAny"
+                android:text="Any" />
+
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/feeFree"
+                android:text="Free" />
+
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/feePaid"
+                android:text="Paid" />
+
+        </RadioGroup>
+
+        <CheckBox
+            android:id="@+id/bookedSlots"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Include booked slots" />
+
+        <Button
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:id="@+id/check"
+            android:text="Check" />
+    </LinearLayout>
+
+</RelativeLayout>
