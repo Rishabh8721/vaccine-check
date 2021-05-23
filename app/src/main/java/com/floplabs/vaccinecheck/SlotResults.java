@@ -29,8 +29,16 @@ public class SlotResults extends AppCompatActivity {
 
         slots = (List<Slot>) getIntent().getSerializableExtra("SLOTS");
         Log.i(TAG, "onCreate: " + slots);
-        binding.resultList.setLayoutManager(new LinearLayoutManager(this));
-        slotListAdapter = new SlotListAdapter(slots, SlotResults.this);
-        binding.resultList.setAdapter(slotListAdapter);
+
+        if (slots == null)
+            binding.empty.setVisibility(View.VISIBLE);
+        else if (slots.isEmpty())
+            binding.empty.setVisibility(View.VISIBLE);
+        else {
+            binding.empty.setVisibility(View.GONE);
+            binding.resultList.setLayoutManager(new LinearLayoutManager(this));
+            slotListAdapter = new SlotListAdapter(slots, SlotResults.this);
+            binding.resultList.setAdapter(slotListAdapter);
+        }
     }
 }

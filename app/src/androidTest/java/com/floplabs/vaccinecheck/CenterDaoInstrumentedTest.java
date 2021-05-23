@@ -122,7 +122,7 @@ public class CenterDaoInstrumentedTest {
         List<String> vaccine = new ArrayList<>();
         vaccine.add("COVISHIELD");
 
-        List<Session> covishieldDose1Sessions = jsonFilter.getFilteredSessions(center.getSessions(), false, vaccine, false); // Covishield & dose1
+        List<Session> covishieldDose1Sessions = jsonFilter.getFilteredSessions(center.getSessions(), false, vaccine, false, 45); // Covishield & dose1
         Log.d(TAG, "testGetFilteredSessions: covishieldDose1Sessions: " + covishieldDose1Sessions);
         assertNotNull(covishieldDose1Sessions);
         for (Session covishieldDose1Session : covishieldDose1Sessions)
@@ -130,7 +130,7 @@ public class CenterDaoInstrumentedTest {
                 fail();
 
         vaccine.add("COVAXIN");
-        List<Session> dose2Sessions = jsonFilter.getFilteredSessions(center.getSessions(), false, vaccine, true); // dose2
+        List<Session> dose2Sessions = jsonFilter.getFilteredSessions(center.getSessions(), false, vaccine, true,45); // dose2
         Log.d(TAG, "testGetFilteredSessions: dose2Sessions: " + dose2Sessions);
         assertNotNull(dose2Sessions);
         for (Session dose2Session : dose2Sessions)

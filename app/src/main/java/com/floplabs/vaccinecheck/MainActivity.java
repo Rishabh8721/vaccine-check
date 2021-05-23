@@ -155,7 +155,12 @@ public class MainActivity extends AppCompatActivity {
             List<Slot> slots = new ArrayList<>();
 
             for (Center feeFilteredCenter : feeFilteredCenters) {
-                List<Session> sessionFiltered = jsonFilter.getFilteredSessions(feeFilteredCenter.getSessions(), binding.bookedSlots.isChecked(), vaccine, binding.dose2.isChecked());
+                int age = 0;
+                if (binding.age18.isChecked())
+                    age = 18;
+                else if (binding.age45.isChecked())
+                    age = 45;
+                List<Session> sessionFiltered = jsonFilter.getFilteredSessions(feeFilteredCenter.getSessions(), binding.bookedSlots.isChecked(), vaccine, binding.dose2.isChecked(), age);
                 List<VaccineFees> vaccineFeesList = feeFilteredCenter.getVaccineFees();
 
                 if(vaccineFeesList == null){

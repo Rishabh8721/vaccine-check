@@ -35,27 +35,21 @@ public class JsonFilter {
         return filteredCenters;
     }
 
-    public List<Session> getFilteredSessions(List<Session> sessions, boolean includeBookedSlots, List<String> vaccine, boolean dose2) {
+    public List<Session> getFilteredSessions(List<Session> sessions, boolean includeBookedSlots, List<String> vaccine, boolean dose2, int age) {
         List<Session> filteredSessions = new ArrayList<>();
+        for (Session session : sessions) {
+            int availableCapacityDose;
+            if (dose2)
+                availableCapacityDose = session.getAvailableCapacityDose2();
+            else
+                availableCapacityDose = session.getAvailableCapacityDose1();
 
-        if (dose2) {
-            for (Session session : sessions)
-                if (includeBookedSlots) {
-                    if (vaccine.contains(session.getVaccine()))
+            if (vaccine.contains(session.getVaccine()) && session.getMinAgeLimit() <= age)
+                if (!includeBookedSlots) {
+                    if (availableCapacityDose > 0)
                         filteredSessions.add(session);
-                }else{
-                    if (vaccine.contains(session.getVaccine()) && session.getAvailableCapacityDose2() > 0)
-                        filteredSessions.add(session);
-                }
-        } else {
-            for (Session session : sessions)
-                if (includeBookedSlots) {
-                    if (vaccine.contains(session.getVaccine()))
-                        filteredSessions.add(session);
-                }else{
-                    if (vaccine.contains(session.getVaccine()) && session.getAvailableCapacityDose1() > 0)
-                        filteredSessions.add(session);
-                }
+                } else
+                    filteredSessions.add(session);
         }
 
         Log.i(TAG, "getFilteredSessions: " + filteredSessions);
