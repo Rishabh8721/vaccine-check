@@ -19,6 +19,7 @@ import com.floplabs.vaccinecheck.model.Session;
 import com.floplabs.vaccinecheck.model.Slot;
 import com.floplabs.vaccinecheck.model.State;
 import com.floplabs.vaccinecheck.model.VaccineFees;
+import com.floplabs.vaccinecheck.util.TinyDB;
 import com.google.firebase.analytics.FirebaseAnalytics;
 
 import java.io.Serializable;
@@ -35,8 +36,10 @@ public class MainActivity extends AppCompatActivity {
     private int resultMode = 0; // 0-->district, 1-->pincode, 2-->center
     private List<State> states;
     private List<District> districts;
+    private boolean firstDistrictStateName, firstDistrictDistrictName;
 
     private FirebaseAnalytics mFirebaseAnalytics;
+    TinyDB tinydb;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +50,7 @@ public class MainActivity extends AppCompatActivity {
 
         // Obtain the FirebaseAnalytics instance.
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
+        tinydb = new TinyDB(MainActivity.this);
 
         centerDAO = new CenterDAOImpl();
         jsonFilter = new JsonFilter();
@@ -69,42 +73,41 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(this, "Can't fetch data, check network", Toast.LENGTH_SHORT).show();
         else {
             binding.districtStateName.setAdapter(getStateSpinnerAdapter());
-            districts = centerDAO.fetchDistricts(states.get(binding.districtStateName.getSelectedItemPosition()).getId());
-            binding.districtDistrictName.setAdapter(getDistrictSpinnerAdapter());
+            firstDistrictStateName = true;
+            firstDistrictDistrictName = true;
+            binding.districtStateName.setSelection(tinydb.getInt("STATE_VALUE"));
         }
-    }
-
-    private ArrayAdapter<String> getDistrictSpinnerAdapter() {
-        List<String> districtNames = new ArrayList<>();
-        for (District district : districts)
-            districtNames.add(district.getName());
-        ArrayAdapter<String> districtSpinnerAdapter = new ArrayAdapter<>(MainActivity.this, android.R.layout.simple_spinner_item, districtNames);
-        districtSpinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        return districtSpinnerAdapter;
-    }
-
-    private ArrayAdapter<String> getStateSpinnerAdapter() {
-        List<String> stateNames = new ArrayList<>();
-        for (State state : states)
-            stateNames.add(state.getName());
-        ArrayAdapter<String> stateSpinnerAdapter = new ArrayAdapter<>(MainActivity.this, android.R.layout.simple_spinner_item, stateNames);
-        stateSpinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        return stateSpinnerAdapter;
     }
 
     private void setListeners() {
         binding.districtStateName.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
-                districts = centerDAO.fetchDistricts(states.get(binding.districtStateName.getSelectedItemPosition()).getId());
-                binding.districtDistrictName.setAdapter(getDistrictSpinnerAdapter());
-            }
+                if (firstDistrictStateName)
+                    firstDistrictStateName = false;
+                else
+                    tinydb.putInt("STATE_VALUE", position);
 
+                districts = centerDAO.fetchDistricts(states.get(position).getId());
+                binding.districtDistrictName.setAdapter(getDistrictSpinnerAdapter());
+                binding.districtDistrictName.setSelection(tinydb.getInt("DISTRICT_VALUE"));
+            }
             @Override
             public void onNothingSelected(AdapterView<?> parentView) {
-
             }
+        });
 
+        binding.districtDistrictName.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
+                if (firstDistrictDistrictName)
+                    firstDistrictDistrictName = false;
+                else
+                    tinydb.putInt("DISTRICT_VALUE", position);
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> parentView) {
+            }
         });
 
         binding.resultsRadioGroup.setOnCheckedChangeListener((group, checkedId) -> {
@@ -202,6 +205,24 @@ public class MainActivity extends AppCompatActivity {
             i.putExtra("SLOTS", (Serializable) slots);
             startActivity(i);
         });
+    }
+
+    private ArrayAdapter<String> getDistrictSpinnerAdapter() {
+        List<String> districtNames = new ArrayList<>();
+        for (District district : districts)
+            districtNames.add(district.getName());
+        ArrayAdapter<String> districtSpinnerAdapter = new ArrayAdapter<>(MainActivity.this, android.R.layout.simple_spinner_item, districtNames);
+        districtSpinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        return districtSpinnerAdapter;
+    }
+
+    private ArrayAdapter<String> getStateSpinnerAdapter() {
+        List<String> stateNames = new ArrayList<>();
+        for (State state : states)
+            stateNames.add(state.getName());
+        ArrayAdapter<String> stateSpinnerAdapter = new ArrayAdapter<>(MainActivity.this, android.R.layout.simple_spinner_item, stateNames);
+        stateSpinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        return stateSpinnerAdapter;
     }
 
     private boolean validPincode(String pincode) {
