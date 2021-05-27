@@ -139,7 +139,7 @@ public class SlotListAdapter extends RecyclerView.Adapter<SlotListAdapter.ViewHo
         timeTextView.setText(time);
         timeTextView.setTextColor(ContextCompat.getColor(context, R.color.white));
         timeTextView.setTypeface(Typeface.DEFAULT_BOLD);
-        timeTextView.setBackgroundResource(R.drawable.pill);
+        timeTextView.setBackgroundResource(R.drawable.pill_blue);
         timeTextView.setPadding(7, 2, 7, 2);
         return timeTextView;
     }

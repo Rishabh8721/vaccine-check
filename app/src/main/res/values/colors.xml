@@ -10,6 +10,11 @@
     <color name="positive_green">#4CAF50</color>
     <color name="medium_orange">#FF9800</color>
     <color name="negative_red">#F44336</color>
+    <color name="contrast_violet">#673AB7</color>
+    <color name="contrast_cyan">#00BCD4</color>
+    <color name="contrast_blue">#2196F3</color>
+    <color name="contrast_darkblue">#3F51B5</color>
+    <color name="contrast_blue_background">#BF2196F3</color>
     <color name="positive_green_background">#BF4CAF50</color>
     <color name="medium_orange_background">#BFFF9800</color>
     <color name="negative_red_background">#BFF44336</color>

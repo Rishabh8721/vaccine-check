@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#ECECEC"
-    tools:context=".MainActivity">
+    tools:context=".CreateChannel">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -21,6 +21,7 @@
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
                 android:elevation="3dp"
                 app:cardBackgroundColor="@color/white"
                 app:cardCornerRadius="5dp">
@@ -34,123 +35,25 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Show results by" />
+                        android:layout_marginTop="10dp"
+                        android:text="State" />
 
-                    <RadioGroup
-                        android:id="@+id/resultsRadioGroup"
+                    <Spinner
+                        android:id="@+id/districtStateName"
                         android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal">
+                        android:layout_marginTop="10dp"
+                        android:text="District" />
 
-                        <RadioButton
-                            android:id="@+id/resultDestrict"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:checked="true"
-                            android:text="District" />
-
-                        <RadioButton
-                            android:id="@+id/resultPincode"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="Pincode" />
-
-                        <RadioButton
-                            android:id="@+id/resultCenter"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="Center" />
-
-                    </RadioGroup>
-
-                    <LinearLayout
-                        android:id="@+id/resultLayoutDistrict"
+                    <Spinner
+                        android:id="@+id/districtDistrictName"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical">
+                        android:layout_height="wrap_content" />
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="10dp"
-                            android:text="State" />
-
-                        <Spinner
-                            android:id="@+id/districtStateName"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="10dp"
-                            android:text="District" />
-
-                        <Spinner
-                            android:id="@+id/districtDistrictName"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:id="@+id/resultLayoutPincode"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:visibility="gone">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="10dp"
-                            android:text="Pincode" />
-
-                        <EditText
-                            android:id="@+id/pincode"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:inputType="number"
-                            android:maxLength="6" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:id="@+id/resultLayoutCenter"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:visibility="gone">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="10dp"
-                            android:text="State" />
-
-                        <Spinner
-                            android:id="@+id/centerStateName"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="10dp"
-                            android:text="District" />
-
-                        <Spinner
-                            android:id="@+id/centerDistrictName"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content" />
-
-                        <androidx.recyclerview.widget.RecyclerView
-                            android:id="@+id/centerList"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="10dp" />
-                    </LinearLayout>
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
@@ -310,23 +213,8 @@
                             android:text="Paid" />
 
                     </RadioGroup>
-
-                    <CheckBox
-                        android:id="@+id/bookedSlots"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Include booked slots" />
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
-
-            <Button
-                android:id="@+id/notifier"
-                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:text="Notifier"
-                android:textColor="@color/medium_orange" />
         </LinearLayout>
     </ScrollView>
 
@@ -340,11 +228,11 @@
         android:padding="7dp">
 
         <Button
-            android:id="@+id/check"
+            android:id="@+id/proceed"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:backgroundTint="@color/positive_green"
-            android:text="Search" />
+            android:text="Proceed" />
     </RelativeLayout>
 
 </RelativeLayout>

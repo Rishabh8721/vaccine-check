@@ -80,6 +80,22 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setListeners() {
+        binding.notifier.setOnClickListener(v -> {
+            Intent i = new Intent(MainActivity.this, NotifierChannelActivity.class);
+            startActivity(i);
+
+//            HashMap<Integer, String> centers = new HashMap<>();
+//            centers.put(696772, "CVC Haleluiya");
+//            centers.put(712631, "CHC Piggu");
+//
+//            List<String> vaccines = new ArrayList<>();
+//            vaccines.add("COVISHIELD");
+//            vaccines.add("COVAXIN");
+//            vaccines.add("SPUTNIK V");
+//
+//            new CreateChannelAsyncTask(this, new NotifierChannel(623, "Aligarh", centers, vaccines, false, 18, 0)).execute();
+        });
+
         binding.districtStateName.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
