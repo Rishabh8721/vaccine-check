@@ -13,6 +13,9 @@ public interface NotifierChannelDao {
     @Query("SELECT * FROM notifierchannel")
     List<NotifierChannel> getAll();
 
+    @Query("SELECT * FROM notifierchannel WHERE did = :did")
+    NotifierChannel getWithId(int did);
+
     @Insert
     void createChannel(NotifierChannel notifierChannel);
 

@@ -1,4 +1,4 @@
-package com.floplabs.vaccinecheck.util;
+package com.floplabs.vaccinecheck.aysnc;
 
 import android.app.Activity;
 import android.database.sqlite.SQLiteConstraintException;

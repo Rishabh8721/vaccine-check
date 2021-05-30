@@ -13,16 +13,11 @@ import com.floplabs.vaccinecheck.dao.CenterDAOImpl;
 import com.floplabs.vaccinecheck.databinding.ActivityNotifierBinding;
 import com.floplabs.vaccinecheck.entity.NotifierChannel;
 import com.floplabs.vaccinecheck.json.JsonFilter;
-import com.floplabs.vaccinecheck.model.Center;
 import com.floplabs.vaccinecheck.model.District;
-import com.floplabs.vaccinecheck.model.Session;
-import com.floplabs.vaccinecheck.model.Slot;
 import com.floplabs.vaccinecheck.model.State;
-import com.floplabs.vaccinecheck.model.VaccineFees;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 public class CreateChannel extends AppCompatActivity {
@@ -114,37 +109,6 @@ public class CreateChannel extends AppCompatActivity {
             public void onNothingSelected(AdapterView<?> parentView) {
             }
         });
-    }
-
-    public void executeRequest(int did, List<Integer> centerIds, List<String> vaccines, boolean secondDose, int age, int feeType) {
-        List<Slot> slots = new ArrayList<>();
-        List<Center> centers = jsonFilter.getNotifierFilteredCenters(centerDAO.fetchByDistrict(did), centerIds, feeType);
-        for (Center center : centers) {
-            List<Session> filteredSesisons = jsonFilter.getNotifierFilteredSessions(center.getSessions(), vaccines, secondDose, age);
-            for (Session session : filteredSesisons) {
-                String fee;
-                List<VaccineFees> vaccineFeesList = center.getVaccineFees();
-                if (vaccineFeesList == null)
-                    fee = "Free";
-                else {
-                    HashMap<String, String> vaccineFeesMap = new HashMap<>();
-                    for (VaccineFees fees : vaccineFeesList)
-                        vaccineFeesMap.put(fees.getVaccine(), fees.getFee());
-
-                    fee = "\u20B9 " + vaccineFeesMap.get(session.getVaccine());
-                }
-
-                slots.add(new Slot(center.getName(), center.getBlockName(), center.getPincode(), session.getDate(), session.getAvailableCapacityDose1(), session.getSlots(), session.getVaccine(), session.getMinAgeLimit(), fee));
-            }
-        }
-
-        if (!slots.isEmpty()){
-            Toast.makeText(CreateChannel.this, "Hurry! Slots available", Toast.LENGTH_SHORT).show();
-            Intent i = new Intent(CreateChannel.this, SlotResults.class);
-            i.putExtra("SLOTS", (Serializable) slots);
-            CreateChannel.this.startActivity(i);
-        }else
-            Toast.makeText(CreateChannel.this, "Sorry, No slots available", Toast.LENGTH_SHORT).show();
     }
 
     private ArrayAdapter<String> getDistrictSpinnerAdapter() {

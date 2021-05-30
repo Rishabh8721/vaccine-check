@@ -20,6 +20,7 @@ import com.floplabs.vaccinecheck.model.Slot;
 import com.floplabs.vaccinecheck.model.State;
 import com.floplabs.vaccinecheck.model.VaccineFees;
 import com.floplabs.vaccinecheck.util.TinyDB;
+import com.floplabs.vaccinecheck.util.Util;
 import com.google.firebase.analytics.FirebaseAnalytics;
 
 import java.io.Serializable;
@@ -83,17 +84,6 @@ public class MainActivity extends AppCompatActivity {
         binding.notifier.setOnClickListener(v -> {
             Intent i = new Intent(MainActivity.this, NotifierChannelActivity.class);
             startActivity(i);
-
-//            HashMap<Integer, String> centers = new HashMap<>();
-//            centers.put(696772, "CVC Haleluiya");
-//            centers.put(712631, "CHC Piggu");
-//
-//            List<String> vaccines = new ArrayList<>();
-//            vaccines.add("COVISHIELD");
-//            vaccines.add("COVAXIN");
-//            vaccines.add("SPUTNIK V");
-//
-//            new CreateChannelAsyncTask(this, new NotifierChannel(623, "Aligarh", centers, vaccines, false, 18, 0)).execute();
         });
 
         binding.districtStateName.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {

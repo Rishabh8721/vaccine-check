@@ -17,16 +17,14 @@ import java.util.concurrent.ExecutionException;
 public class CenterDAOImpl implements CenterDAO {
 
     private static final String TAG = "center_dao_impl";
-    private DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+    private final DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
 
     @Override
     public List<State> fetchStates() {
         String statesJson = "";
         try {
             statesJson = new JsonTask().execute("https://cdn-api.co-vin.in/api/v2/admin/location/states").get();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
+        } catch (ExecutionException | InterruptedException e) {
             e.printStackTrace();
         }
         return new JsonConverter().getStates(statesJson).getStates();
@@ -37,9 +35,7 @@ public class CenterDAOImpl implements CenterDAO {
         String districtsJson = "";
         try {
             districtsJson = new JsonTask().execute("https://cdn-api.co-vin.in/api/v2/admin/location/districts/" + StateId).get();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
+        } catch (ExecutionException | InterruptedException e) {
             e.printStackTrace();
         }
         return new JsonConverter().getDistricts(districtsJson).getDistricts();
@@ -51,9 +47,7 @@ public class CenterDAOImpl implements CenterDAO {
         try {
             dataJson = new JsonTask().execute("https://cdn-api.co-vin.in/api/v2/appointment/sessions/public/calendarByDistrict?district_id=" + districtId + "&date=" + dateFormat.format(new Date())).get();
             Log.d(TAG, "fetchByDistrict: " + "https://cdn-api.co-vin.in/api/v2/appointment/sessions/public/calendarByDistrict?district_id=" + districtId + "&date=" + dateFormat.format(new Date()));
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
+        } catch (ExecutionException | InterruptedException e) {
             e.printStackTrace();
         }
         return new JsonConverter().getCowinData(dataJson).getCenters();
@@ -64,9 +58,7 @@ public class CenterDAOImpl implements CenterDAO {
         String dataJson = "";
         try {
             dataJson = new JsonTask().execute("https://cdn-api.co-vin.in/api/v2/appointment/sessions/public/calendarByDistrict?district_id=" + districtId + "&date=" + dateFormat.format(date)).get();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
+        } catch (ExecutionException | InterruptedException e) {
             e.printStackTrace();
         }
         return new JsonConverter().getCowinData(dataJson).getCenters();
@@ -77,9 +69,7 @@ public class CenterDAOImpl implements CenterDAO {
         String dataJson = "";
         try {
             dataJson = new JsonTask().execute("https://cdn-api.co-vin.in/api/v2/appointment/sessions/public/calendarByPin?pincode=" + pincode + "&date=" + dateFormat.format(new Date())).get();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
+        } catch (ExecutionException | InterruptedException e) {
             e.printStackTrace();
         }
         return new JsonConverter().getCowinData(dataJson).getCenters();
@@ -90,9 +80,7 @@ public class CenterDAOImpl implements CenterDAO {
         String dataJson = "";
         try {
             dataJson = new JsonTask().execute("https://cdn-api.co-vin.in/api/v2/appointment/sessions/public/calendarByPin?pincode=" + pincode + "&date=" + dateFormat.format(date)).get();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
+        } catch (ExecutionException | InterruptedException e) {
             e.printStackTrace();
         }
         return new JsonConverter().getCowinData(dataJson).getCenters();
@@ -103,9 +91,7 @@ public class CenterDAOImpl implements CenterDAO {
         String dataJson = "";
         try {
             dataJson = new JsonTask().execute("https://cdn-api.co-vin.in/api/v2/appointment/sessions/public/calendarByCenter?center_id=" + centerId + "&date=" + dateFormat.format(new Date())).get();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
+        } catch (ExecutionException | InterruptedException e) {
             e.printStackTrace();
         }
         return new JsonConverter().getCowinCenterData(dataJson).getCenter();
@@ -116,9 +102,7 @@ public class CenterDAOImpl implements CenterDAO {
         String dataJson = "";
         try {
             dataJson = new JsonTask().execute("https://cdn-api.co-vin.in/api/v2/appointment/sessions/public/calendarByCenter?center_id=" + centerId + "&date=" + dateFormat.format(date)).get();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
+        } catch (ExecutionException | InterruptedException e) {
             e.printStackTrace();
         }
         return new JsonConverter().getCowinCenterData(dataJson).getCenter();

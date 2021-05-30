@@ -10,13 +10,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.floplabs.vaccinecheck.adapter.CenterListAdapter;
+import com.floplabs.vaccinecheck.aysnc.CreateChannelAsyncTask;
 import com.floplabs.vaccinecheck.dao.CenterDAOImpl;
 import com.floplabs.vaccinecheck.databinding.ActivityCenterSelectBinding;
 import com.floplabs.vaccinecheck.entity.NotifierChannel;
 import com.floplabs.vaccinecheck.json.JsonFilter;
 import com.floplabs.vaccinecheck.model.Center;
 import com.floplabs.vaccinecheck.model.CenterBasic;
-import com.floplabs.vaccinecheck.util.CreateChannelAsyncTask;
 
 import java.util.ArrayList;
 import java.util.HashMap;
