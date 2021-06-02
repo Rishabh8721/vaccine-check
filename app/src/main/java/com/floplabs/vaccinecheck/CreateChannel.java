@@ -12,11 +12,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.floplabs.vaccinecheck.dao.CenterDAOImpl;
 import com.floplabs.vaccinecheck.databinding.ActivityNotifierBinding;
 import com.floplabs.vaccinecheck.entity.NotifierChannel;
-import com.floplabs.vaccinecheck.json.JsonFilter;
 import com.floplabs.vaccinecheck.model.District;
 import com.floplabs.vaccinecheck.model.State;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,17 +24,15 @@ public class CreateChannel extends AppCompatActivity {
     private List<State> states;
     private List<District> districts;
     private CenterDAOImpl centerDAO;
-    private JsonFilter jsonFilter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = binding.inflate(getLayoutInflater());
+        binding = ActivityNotifierBinding.inflate(getLayoutInflater());
         View view = binding.getRoot();
         setContentView(view);
 
         centerDAO = new CenterDAOImpl();
-        jsonFilter = new JsonFilter();
 
         try {
             getStates();
@@ -93,7 +89,7 @@ public class CreateChannel extends AppCompatActivity {
 
             NotifierChannel notifierChannel = new NotifierChannel(did, districtName, false, null, vaccine, binding.dose2.isChecked(), age, fee);
             Intent i = new Intent(CreateChannel.this, CenterSelect.class);
-            i.putExtra("CHANNEL", (Serializable) notifierChannel);
+            i.putExtra("CHANNEL", notifierChannel);
             startActivity(i);
             finish();
         });

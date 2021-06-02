@@ -14,9 +14,11 @@ public class Util {
     public static void scheduleJob(Context context, int jobId) {
         ComponentName serviceComponent = new ComponentName(context, NotifierJobService.class);
         JobInfo.Builder builder = new JobInfo.Builder(jobId, serviceComponent);
-        builder.setRequiresCharging(false);
-        builder.setRequiredNetworkType(JobInfo.NETWORK_TYPE_ANY);
         builder.setPeriodic(15 * 60 * 1000);
+        builder.setRequiredNetworkType(JobInfo.NETWORK_TYPE_NONE);
+        builder.setRequiresDeviceIdle(false);
+        builder.setRequiresCharging(false);
+        builder.setPersisted(true);
         JobScheduler jobScheduler = context.getSystemService(JobScheduler.class);
         jobScheduler.schedule(builder.build());
     }

@@ -20,7 +20,6 @@ import com.floplabs.vaccinecheck.model.Slot;
 import com.floplabs.vaccinecheck.model.State;
 import com.floplabs.vaccinecheck.model.VaccineFees;
 import com.floplabs.vaccinecheck.util.TinyDB;
-import com.floplabs.vaccinecheck.util.Util;
 import com.google.firebase.analytics.FirebaseAnalytics;
 
 import java.io.Serializable;
@@ -38,19 +37,17 @@ public class MainActivity extends AppCompatActivity {
     private List<State> states;
     private List<District> districts;
     private boolean firstDistrictStateName, firstDistrictDistrictName;
-
-    private FirebaseAnalytics mFirebaseAnalytics;
-    TinyDB tinydb;
+    private TinyDB tinydb;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = binding.inflate(getLayoutInflater());
+        binding = ActivityMainBinding.inflate(getLayoutInflater());
         View view = binding.getRoot();
         setContentView(view);
 
         // Obtain the FirebaseAnalytics instance.
-        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
+        FirebaseAnalytics mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
         tinydb = new TinyDB(MainActivity.this);
 
         centerDAO = new CenterDAOImpl();

@@ -25,23 +25,19 @@ import java.util.List;
 public class CenterSelect extends AppCompatActivity {
 
     private static final String TAG = "center_select";
-    private ActivityCenterSelectBinding binding;
     private NotifierChannel notifierChannel;
-    private CenterDAOImpl centerDAO;
-    private JsonFilter jsonFilter;
-    private CenterListAdapter centerListAdapter;
     private HashMap<Integer, String> centerMap;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = binding.inflate(getLayoutInflater());
+        com.floplabs.vaccinecheck.databinding.ActivityCenterSelectBinding binding = ActivityCenterSelectBinding.inflate(getLayoutInflater());
         View view = binding.getRoot();
         setContentView(view);
 
         centerMap = new HashMap<>();
-        centerDAO = new CenterDAOImpl();
-        jsonFilter = new JsonFilter();
+        CenterDAOImpl centerDAO = new CenterDAOImpl();
+        JsonFilter jsonFilter = new JsonFilter();
 
         notifierChannel = (NotifierChannel) getIntent().getSerializableExtra("CHANNEL");
 
@@ -58,7 +54,7 @@ public class CenterSelect extends AppCompatActivity {
 
             binding.empty.setVisibility(View.GONE);
             binding.centerList.setLayoutManager(new LinearLayoutManager(CenterSelect.this));
-            centerListAdapter = new CenterListAdapter(centerBasics, CenterSelect.this);
+            CenterListAdapter centerListAdapter = new CenterListAdapter(centerBasics, CenterSelect.this);
             binding.centerList.setAdapter(centerListAdapter);
         }
 

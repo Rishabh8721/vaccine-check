@@ -2,13 +2,13 @@ package com.floplabs.vaccinecheck.aysnc;
 
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.app.job.JobParameters;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.util.Log;
 
 import androidx.core.app.NotificationCompat;
-import androidx.core.app.NotificationManagerCompat;
 import androidx.room.Room;
 
 import com.floplabs.vaccinecheck.R;
@@ -22,6 +22,7 @@ import com.floplabs.vaccinecheck.model.Center;
 import com.floplabs.vaccinecheck.model.Session;
 import com.floplabs.vaccinecheck.model.Slot;
 import com.floplabs.vaccinecheck.model.VaccineFees;
+import com.floplabs.vaccinecheck.service.NotifierJobService;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -44,11 +45,13 @@ public class ChannelCheckAsyncTask extends AsyncTask<Void, Void, List<Slot>> {
     private final int districtId;
     private JsonFilter jsonFilter;
     private CenterDAOImpl centerDAO;
+    private JobParameters params;
     private DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
 
-    public ChannelCheckAsyncTask(Context context, int districtId) {
+    public ChannelCheckAsyncTask(Context context, JobParameters params) {
         this.context = context;
-        this.districtId = districtId;
+        this.params = params;
+        this.districtId = params.getJobId();
         jsonFilter = new JsonFilter();
         centerDAO = new CenterDAOImpl();
     }
@@ -98,20 +101,15 @@ public class ChannelCheckAsyncTask extends AsyncTask<Void, Void, List<Slot>> {
     protected void onPostExecute(List<Slot> param) {
         if (!param.isEmpty()) {
             Log.i(TAG, "onPostExecute: " + "!! SLOTS AVAILABLE !!");
-            createNotificationChannel();
-            NotificationCompat.Builder builder = new NotificationCompat.Builder(context, getDistrictId()+"")
-                    .setSmallIcon(R.drawable.ic_stat_name)
-                    .setContentTitle("! Vaccine Alert !")
-                    .setContentText("Hurry! Vaccine slot available, check on app")
-                    .setPriority(NotificationCompat.PRIORITY_DEFAULT);
-
-            NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
-            notificationManager.notify(getDistrictId(), builder.build());
+            createNotification();
         }else
             Log.i(TAG, "onPostExecute: " + "No slots available");
+
+        NotifierJobService notifierJobService = (NotifierJobService) context;
+        notifierJobService.jobFinished(params, true);
     }
 
-    private void createNotificationChannel() {
+    private void createNotification() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             CharSequence name = "vaccine-notifier";
             String description = "Notification channel to notify vaccine slot availability";
@@ -122,6 +120,14 @@ public class ChannelCheckAsyncTask extends AsyncTask<Void, Void, List<Slot>> {
             // or other notification behaviors after this
             NotificationManager notificationManager = context.getSystemService(NotificationManager.class);
             notificationManager.createNotificationChannel(channel);
+
+            NotificationCompat.Builder builder = new NotificationCompat.Builder(context, getDistrictId()+"")
+                    .setSmallIcon(R.drawable.ic_stat_name)
+                    .setContentTitle("! Vaccine Alert !")
+                    .setContentText("Hurry! Vaccine slot available, check on app")
+                    .setPriority(NotificationCompat.PRIORITY_DEFAULT);
+
+            notificationManager.notify(getDistrictId(), builder.build());
         }
     }
 

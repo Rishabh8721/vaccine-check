@@ -27,7 +27,7 @@ public class SlotResults extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = binding.inflate(getLayoutInflater());
+        binding = ActivitySlotResultsBinding.inflate(getLayoutInflater());
         View view = binding.getRoot();
         setContentView(view);
 
@@ -66,8 +66,6 @@ public class SlotResults extends AppCompatActivity {
 
     private List<Slot> getSortedSlots(List<Slot> slots, int position) {
         switch (position) {
-            case 0:
-                return jsonSort.getDateSortedSlots(slots, false);
             case 1:
                 return jsonSort.getDateSortedSlots(slots, true);
             case 2:
