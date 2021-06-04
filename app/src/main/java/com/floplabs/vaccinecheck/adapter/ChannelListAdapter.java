@@ -22,7 +22,7 @@ import java.util.List;
 public class ChannelListAdapter extends RecyclerView.Adapter<ChannelListAdapter.ViewHolder> {
     private final List<NotifierChannel> notifierChannels;
     private final Context context;
-    private List<Integer> activeChannels;
+    private List<String> activeChannels;
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         private final TextView district;
@@ -85,7 +85,7 @@ public class ChannelListAdapter extends RecyclerView.Adapter<ChannelListAdapter.
         }
     }
 
-    public ChannelListAdapter(List<NotifierChannel> notifierChannels, List<Integer> activeChannels, Context context) {
+    public ChannelListAdapter(List<NotifierChannel> notifierChannels, List<String> activeChannels, Context context) {
         this.notifierChannels = notifierChannels;
         this.context = context;
         this.activeChannels = activeChannels;
@@ -125,7 +125,7 @@ public class ChannelListAdapter extends RecyclerView.Adapter<ChannelListAdapter.
             for (String centerName : notifierChannels.get(position).getCenters().values())
                 viewHolder.getCentersLayout().addView(getPillTextView(centerName, R.drawable.pill_green));
 
-        if (activeChannels.contains(notifierChannels.get(position).getDid())) {
+        if (activeChannels.contains(notifierChannels.get(position).getWorkId())) {
             viewHolder.start.setText("Stop");
             viewHolder.start.setTextColor(ContextCompat.getColor(context, R.color.negative_red));
         }
@@ -133,7 +133,7 @@ public class ChannelListAdapter extends RecyclerView.Adapter<ChannelListAdapter.
         viewHolder.delete.setOnClickListener(v -> notifierChannelActivity.deleteFromLocal(notifierChannels.get(position).getDid()));
         viewHolder.edit.setOnClickListener(v -> Toast.makeText(context, "Under development", Toast.LENGTH_SHORT).show());
         viewHolder.start.setOnClickListener(v -> {
-            if (activeChannels.contains(notifierChannels.get(position).getDid()))
+            if (activeChannels.contains(notifierChannels.get(position).getWorkId()))
                 notifierChannelActivity.stopChannel(notifierChannels.get(position).getDid());
             else
                 notifierChannelActivity.startChannel(notifierChannels.get(position));

@@ -16,6 +16,12 @@ public interface NotifierChannelDao {
     @Query("SELECT * FROM notifierchannel WHERE did = :did")
     NotifierChannel getWithId(int did);
 
+    @Query("SELECT did FROM notifierchannel WHERE work_id = :workId")
+    int getDistrictId(String workId);
+
+    @Query("UPDATE notifierchannel SET work_id = :workId WHERE did = :did")
+    void updateWorkId(String workId, int did);
+
     @Insert
     void createChannel(NotifierChannel notifierChannel);
 

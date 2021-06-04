@@ -66,6 +66,8 @@ public class CenterSelect extends AppCompatActivity {
             }else
                 notifierChannel.setCenters(centerMap);
 
+            notifierChannel.setWorkId("");
+
             Log.i(TAG, "onCreate: " + notifierChannel);
             new CreateChannelAsyncTask(this, notifierChannel).execute();
         });

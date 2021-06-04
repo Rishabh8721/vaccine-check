@@ -18,6 +18,9 @@ public class NotifierChannel implements Serializable {
     @PrimaryKey
     private int did;
 
+    @ColumnInfo(name = "work_id")
+    private String workId;
+
     @ColumnInfo(name = "district_name")
     private String districtName;
 
@@ -39,8 +42,9 @@ public class NotifierChannel implements Serializable {
     public NotifierChannel() {}
 
     @Ignore
-    public NotifierChannel(int did, String districtName, boolean allCenters, HashMap<Integer, String> centers, List<String> vaccines, boolean secondDose, int age, int feeType) {
+    public NotifierChannel(int did, String workId, String districtName, boolean allCenters, HashMap<Integer, String> centers, List<String> vaccines, boolean secondDose, int age, int feeType) {
         this.did = did;
+        this.workId = workId;
         this.districtName = districtName;
         this.allCenters = allCenters;
         this.centers = centers;
@@ -114,10 +118,19 @@ public class NotifierChannel implements Serializable {
         this.allCenters = allCenters;
     }
 
+    public String getWorkId() {
+        return workId;
+    }
+
+    public void setWorkId(String workId) {
+        this.workId = workId;
+    }
+
     @Override
     public String toString() {
         return "NotifierChannel{" +
                 "did=" + did +
+                ", workId='" + workId + '\'' +
                 ", districtName='" + districtName + '\'' +
                 ", allCenters=" + allCenters +
                 ", centers=" + centers +

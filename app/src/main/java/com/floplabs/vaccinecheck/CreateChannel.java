@@ -87,7 +87,7 @@ public class CreateChannel extends AppCompatActivity {
             else if (binding.feePaid.isChecked())
                 fee = 2;
 
-            NotifierChannel notifierChannel = new NotifierChannel(did, districtName, false, null, vaccine, binding.dose2.isChecked(), age, fee);
+            NotifierChannel notifierChannel = new NotifierChannel(did, "", districtName, false, null, vaccine, binding.dose2.isChecked(), age, fee);
             Intent i = new Intent(CreateChannel.this, CenterSelect.class);
             i.putExtra("CHANNEL", notifierChannel);
             startActivity(i);
