@@ -2,6 +2,7 @@ package com.floplabs.vaccinecheck;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
@@ -16,7 +17,7 @@ import com.floplabs.vaccinecheck.databinding.ActivityNotifierChannelBinding;
 import com.floplabs.vaccinecheck.entity.NotifierChannel;
 import com.floplabs.vaccinecheck.util.Util;
 
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
@@ -50,21 +51,13 @@ public class NotifierChannelActivity extends AppCompatActivity {
         else if (notifierChannels.isEmpty())
             binding.empty.setVisibility(View.VISIBLE);
         else {
-            List<String> activeChannelIds = new ArrayList<>();
-
-//            List<JobInfo> activeJobs = Util.getRunningNotifiers(this);
-//            for (JobInfo activeJob : activeJobs)
-//                activeChannelIds.add(activeJob.getId());
-
+            HashMap<String, WorkInfo.State> activeChannelIds = new HashMap<>();
             try {
                 List<WorkInfo> activeJobs = Util.getActiveWorkInfo(this);
 
                 for (WorkInfo workInfo : activeJobs) {
-//                    AppDatabase db = Room.databaseBuilder(NotifierChannelActivity.this, AppDatabase.class, "notifier-channel").build();
-//                    NotifierChannelDao notifierChannelDao = db.notifierChannelDao();
-//                    int districtId = notifierChannelDao.getDistrictId(workInfo.getId().toString());
-                    activeChannelIds.add(workInfo.getId().toString());
-//                    Log.i(TAG, "populateChannelList: " + districtId);
+                    Log.i(TAG, "populateChannelList: " + workInfo.toString());
+                    activeChannelIds.put(workInfo.getId().toString(), workInfo.getState());
                 }
             } catch (ExecutionException | InterruptedException e) {
                 e.printStackTrace();
@@ -78,7 +71,6 @@ public class NotifierChannelActivity extends AppCompatActivity {
     }
 
     public void startChannel(NotifierChannel notifierChannel){
-//        Util.scheduleJob(this, notifierChannel.getDid());
         Util.enqueueWorkRequest(this, notifierChannel.getDid());
         Toast.makeText(this, "Channel started successfully", Toast.LENGTH_SHORT).show();
         binding.resultList.setAdapter(null);
@@ -86,7 +78,6 @@ public class NotifierChannelActivity extends AppCompatActivity {
     }
 
     public void stopChannel(int id){
-//        Util.stopNotifier(this, id);
         Util.stopWork(this, id);
         Toast.makeText(this, "Channel stopped successfully", Toast.LENGTH_SHORT).show();
         binding.resultList.setAdapter(null);

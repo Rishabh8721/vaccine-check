@@ -12,17 +12,19 @@ import android.widget.Toast;
 
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.work.WorkInfo;
 
 import com.floplabs.vaccinecheck.NotifierChannelActivity;
 import com.floplabs.vaccinecheck.R;
 import com.floplabs.vaccinecheck.entity.NotifierChannel;
 
+import java.util.HashMap;
 import java.util.List;
 
 public class ChannelListAdapter extends RecyclerView.Adapter<ChannelListAdapter.ViewHolder> {
     private final List<NotifierChannel> notifierChannels;
     private final Context context;
-    private List<String> activeChannels;
+    private HashMap<String, WorkInfo.State> activeChannels;
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         private final TextView district;
@@ -30,6 +32,7 @@ public class ChannelListAdapter extends RecyclerView.Adapter<ChannelListAdapter.
         private final LinearLayout vaccinesLayout;
         private final TextView dose;
         private final TextView age;
+        private final TextView state;
         private final TextView fee;
         private final Button delete;
         private final Button edit;
@@ -46,6 +49,7 @@ public class ChannelListAdapter extends RecyclerView.Adapter<ChannelListAdapter.
             delete = view.findViewById(R.id.delete);
             edit = view.findViewById(R.id.edit);
             start = view.findViewById(R.id.start);
+            state = view.findViewById(R.id.state);
         }
 
         public TextView getDistrict() {
@@ -83,9 +87,13 @@ public class ChannelListAdapter extends RecyclerView.Adapter<ChannelListAdapter.
         public Button getStart() {
             return start;
         }
+
+        public TextView getState() {
+            return state;
+        }
     }
 
-    public ChannelListAdapter(List<NotifierChannel> notifierChannels, List<String> activeChannels, Context context) {
+    public ChannelListAdapter(List<NotifierChannel> notifierChannels, HashMap<String, WorkInfo.State> activeChannels, Context context) {
         this.notifierChannels = notifierChannels;
         this.context = context;
         this.activeChannels = activeChannels;
@@ -125,15 +133,27 @@ public class ChannelListAdapter extends RecyclerView.Adapter<ChannelListAdapter.
             for (String centerName : notifierChannels.get(position).getCenters().values())
                 viewHolder.getCentersLayout().addView(getPillTextView(centerName, R.drawable.pill_green));
 
-        if (activeChannels.contains(notifierChannels.get(position).getWorkId())) {
-            viewHolder.start.setText("Stop");
-            viewHolder.start.setTextColor(ContextCompat.getColor(context, R.color.negative_red));
+        if (activeChannels.containsKey(notifierChannels.get(position).getWorkId())) {
+            if(activeChannels.get(notifierChannels.get(position).getWorkId()) == WorkInfo.State.RUNNING) {
+                viewHolder.state.setText("Running");
+                viewHolder.start.setText("Stop");
+                viewHolder.start.setTextColor(ContextCompat.getColor(context, R.color.negative_red));
+            }else if(activeChannels.get(notifierChannels.get(position).getWorkId()) == WorkInfo.State.CANCELLED)
+                viewHolder.state.setText("Stopped");
+            else if(activeChannels.get(notifierChannels.get(position).getWorkId()) == WorkInfo.State.ENQUEUED)
+                viewHolder.state.setText("Queued");
+            else if(activeChannels.get(notifierChannels.get(position).getWorkId()) == WorkInfo.State.SUCCEEDED)
+                viewHolder.state.setText("Succeeded");
+            else if(activeChannels.get(notifierChannels.get(position).getWorkId()) == WorkInfo.State.FAILED)
+                viewHolder.state.setText("Failed");
+            else if(activeChannels.get(notifierChannels.get(position).getWorkId()) == WorkInfo.State.RUNNING)
+                viewHolder.state.setText("Running");
         }
 
         viewHolder.delete.setOnClickListener(v -> notifierChannelActivity.deleteFromLocal(notifierChannels.get(position).getDid()));
         viewHolder.edit.setOnClickListener(v -> Toast.makeText(context, "Under development", Toast.LENGTH_SHORT).show());
         viewHolder.start.setOnClickListener(v -> {
-            if (activeChannels.contains(notifierChannels.get(position).getWorkId()))
+            if (activeChannels.containsKey(notifierChannels.get(position).getWorkId()) && activeChannels.get(notifierChannels.get(position).getWorkId()) == WorkInfo.State.RUNNING)
                 notifierChannelActivity.stopChannel(notifierChannels.get(position).getDid());
             else
                 notifierChannelActivity.startChannel(notifierChannels.get(position));
